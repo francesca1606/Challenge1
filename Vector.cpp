@@ -3,6 +3,12 @@
 #include <iostream>
 
 
+Vector& Vector::operator=(const Vector& v){
+      if(&v != this)
+          point= v.point;
+      return *this;
+}
+
 std::vector<double> Vector::getPoint() const{
       return point;
 }
@@ -11,21 +17,28 @@ void Vector::setPoint(const std::vector<double> &s){
       point=s;
 }
 
-double Vector::operator[] (size_t n) const{
-      return point[n];
+//if the index is out of bounds the function returns 0 with a message
+double Vector::operator[] (unsigned int n) const{
+      if(n<point.size())
+         return point[n];
+      else{
+            std::cout << "index out of bounds";
+            return 0.;
+      }
 }
 
 //product of a Vector with a scalar (a double)
+//Vector*double
 Vector Vector::operator*(double alpha) const{
-      Vector result=*this;
-      for(auto &i: result.getPoint()){
-          i*=alpha;
+      std::vector<double> result=point;
+      for(int i=0; i< point.size(); ++i){
+          result[i] *= alpha;
       }
-      return result;
+      return Vector(result);
 };
 
 //returns size of the Vcetor
-size_t Vector::size() const{
+unsigned int Vector::size() const{
       return point.size();
 }
 
@@ -51,7 +64,7 @@ void Vector::print() const{
 Vector operator-(const Vector &v1, const Vector &v2){
     std::vector<double> result=v1.getPoint();
     if(v1.size()==v2.size())
-      for(auto i: result)
+      for(int i=0; i<v1.size(); ++i)
           result[i]-= v2[i];
     return Vector(result);
 }

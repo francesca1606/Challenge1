@@ -1,12 +1,17 @@
 #include "gradientMethod.hpp"
 #include <iostream>
+#include <fstream>
 #include <math.h>
+
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 
 Vector gradientMethod::gradient_method(const params_for_GD & g) const{
     
     Vector xk=g.x0, xk1=g.x0;
-    double alphak= g.step_init;
+    double alphak= g.alpha0;
     int k=0;
 
     constexpr strategies strat=strategies::exp_decay;  ///MODIFICA è da leggere da file
@@ -24,6 +29,20 @@ Vector gradientMethod::gradient_method(const params_for_GD & g) const{
 }
 
 
+params_for_GD gradientMethod::read_parameters() const{
+  std::ifstream f("data.json");
+  json data = json::parse(f);
+  params_for_GD g;
+  std::vector<double> x0_v = data["parameters"]["x0"];
+  g.x0=x0_v;
+  g.alpha0 = data["parameters"].value("alpha0", 1.0);
+  g.tol_res = data["parameters"].value("tol_res", 0.0);
+  g.tol_x = data["parameters"].value("tol_x", 0.0);
+  g.max_iter = data["parameters"].value("max_iter", 1);
+  g.mu = data["parameters"].value("mu", 1.0);
+  g.sigma = data["parameters"].value("sigma", 1.0);
+  return g;
+}
 
 
 double gradientMethod::exp_decay(const int k,const double alpha) const{
@@ -35,7 +54,7 @@ double gradientMethod::inv_decay(const int k, const double alpha) const{
 double gradientMethod::line_search(const double alpha, const Vector& xk) const {
     if(g.sigma>0 || g.sigma<0.5){
         const Vector s= xk - alpha*eval_df(xk);
-        if ( g.f(xk) - g.f(s) >= g.sigma*alpha*(vect_norm(eval_df(xk)))^2 )
+        if ( g.f(xk) - g.f(s) >= g.sigma*alpha*((eval_df(xk)).norm())^2 )
           return alpha;
         else
             return line_search(alpha/2, xk);

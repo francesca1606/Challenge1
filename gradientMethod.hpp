@@ -22,7 +22,8 @@ public:
 
     Vector gradient_method (const params_for_GD &g) const;
 
-    //FUNZIONE CHE LEGGE DATI
+    //function that reads the parameters of the struct
+    params_for_GD read_parameters() const;
     //FUNZIONE CHE LEGGE FUNZIONI
     
     //Vector eval_df(Vector x) const;

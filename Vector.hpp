@@ -11,12 +11,14 @@ public:
      Vector()=default;
      Vector(const std::vector<double> &v): point(v) {};
 
+     Vector& operator=(const Vector& v);
+
      std::vector<double> getPoint() const;
      void setPoint(const std::vector<double> &s);
 
-     double operator[] (std::size_t n) const;
+     double operator[] (unsigned int n) const;
      Vector operator*(double alpha) const;
-     std::size_t size() const;
+     unsigned int size() const;
 
      double norm() const;
      void print() const;
