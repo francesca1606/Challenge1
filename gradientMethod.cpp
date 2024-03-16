@@ -1,5 +1,5 @@
-#include "gradientMethod.hpp"
-#include "muparserx_fun.hpp"
+#include "gradientMethod.h"
+#include "muParserXFun.hpp"
 #include <iostream>
 #include <fstream>
 #include <math.h>
@@ -18,10 +18,9 @@ Vector gradientMethod::gradient_method(const params_for_GD & g) const{
     constexpr strategies strat=strategies::exp_decay; 
 
     for( ; k<=g.max_iter; ++k){
-        //alphak= step_method(alphak, flag, k, xk);
-        alphak =  compute_step <strat>(alphak,k, xk, g);  //MODIFICA PERCHè COSI NON VA
-        xk1= xk - alphak*g.df(xk);
-        if((xk1 - xk).norm()< g.tol_x || (df(xk1) - df(xk)).norm < g.tol_res)
+        alphak =  compute_step <strat>(alphak,k, xk, g);  
+        xk1= xk - alphak*dfun.evaluate(xk);   //needs to be vector ....
+        if((xk1 - xk).norm()< g.tol_x || (dfun.evaluate(xk1) - dfun.evaluate(xk)).norm < g.tol_res)
             break;
         xk=xk1;
     }
@@ -30,21 +29,25 @@ Vector gradientMethod::gradient_method(const params_for_GD & g) const{
 }
 
 
+// IN READ_PARAMS DEVO GIA CONVERTIRE FUN E DFUN ----> BISOGNA ANCHE MODIFCARE LA STRUCT
 params_for_GD gradientMethod::read_parameters() const{
   std::ifstream f("data.json");
   json data = json::parse(f);
-  params_for_GD g;
+  
   std::vector<double> x0_v = data["parameters"]["x0"];
-  g.x0=x0_v;
-  g.alpha0 = data["parameters"].value("alpha0", 1.0);
-  g.tol_res = data["parameters"].value("tol_res", 0.0);
-  g.tol_x = data["parameters"].value("tol_x", 0.0);
-  g.max_iter = data["parameters"].value("max_iter", 1);
-  g.mu = data["parameters"].value("mu", 1.0);
-  g.sigma = data["parameters"].value("sigma", 1.0);
-  g.f=data["functions"].value("f","");
-  g.df=data["functions"].value("df","");
-  return g;
+  double alpha0 = data["parameters"].value("alpha0", 1.0);
+  double tol_res = data["parameters"].value("tol_res", 0.0);
+  double tol_x = data["parameters"].value("tol_x", 0.0);
+  int max_iter = data["parameters"].value("max_iter", 1);
+  double mu = data["parameters"].value("mu", 1.0);
+  double sigma = data["parameters"].value("sigma", 1.0);
+  std::string f_string=data["functions"].value("f","");
+  std::string df_string=data["functions"].value("df","");
+  
+  muParserXFun fun(f_string);
+  muParserXFun dfun(df_string);
+  
+  return params_for_GD(fun, dfun, Vector(x0_v), alpha0, tol_res, tol_x, max_iter, mu, sigma);
 }
 
 
@@ -60,7 +63,7 @@ double gradientMethod::line_search(const double alpha, const Vector& xk, const d
         if ( f(xk) - f(s) >= sigma*alpha*((df(xk)).norm())^2 )
           return alpha;
         else
-            return line_search(alpha/2, xk);
+            return line_search(alpha/2, xk, sigma);
     }
     std::cerr<< "Sigma has to be in the interval (0, 0.5)" << std::endl;
     return ;

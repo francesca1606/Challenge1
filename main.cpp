@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include "muParserXFun.hpp"
-#include "Vector.hpp"
+#include "muParserXFun.h"
+#include "Vector.h"
 
 int main () {
 
@@ -23,6 +23,14 @@ int main () {
     } catch (const std::exception& e) {
         std::cerr << "Exception: " << e.what() << std::endl;
     }
+
+
+
+    // read parameters from file
+    // call gradient method
+    // print solution through Vector print
+
+
      
     return 0;
 }

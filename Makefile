@@ -9,7 +9,7 @@ LIBS  ?= -lmuparserx
 SRCS = $(wildcard *.cpp)                     #main.cpp Vector.cpp 
 OBJS = $(SRCS:.cpp=.o)
 
-HEADERS = $(wildcard *.hpp)                  #Vector.hpp muparserx_fun.hpp 
+HEADERS = $(wildcard *.hpp *.h)          #non so se con .h funziona        #Vector.hpp muparserx_fun.hpp 
 
 all: $(EXEC)
 
