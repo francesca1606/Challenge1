@@ -6,12 +6,17 @@ EXEC     = main
 LDFLAGS ?= -L../pacs-examples/Examples/lib   #è DA CAMBIARE (CURRENT DIRECTORY DI GETPOT)
 LIBS  ?= -lmuparserx
 
+SRCS = $(wildcard *.cpp)                     #main.cpp Vector.cpp 
+OBJS = $(SRCS:.cpp=.o)
+
+HEADERS = $(wildcard *.hpp)                  #Vector.hpp muparserx_fun.hpp 
+
 all: $(EXEC)
 
-%.o: %.cpp gradientMethod.hpp muparser_fun.hpp
+%.o: %.cpp  $(HEADERS)                       #gradientMethod.hpp
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $<
 
-$(EXEC): %: %.o
+$(EXEC):  $(OBJS)                           #%: %.o   
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< $(LIBS) -o $@
 
 clean:

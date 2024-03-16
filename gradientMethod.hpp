@@ -28,14 +28,12 @@ public:
     params_for_GD read_parameters() const;
     //FUNZIONE CHE LEGGE FUNZIONI
     
-    //Vector eval_df(Vector x) const;
-
     template<strategies S>
-    double compute_step (const double alphak, const int k, const Vector &xk) const;
+    double compute_step (const double alphak, const int k, const Vector &xk, const params_for_GD &g) const;
 
-    double exp_decay(const int k, const double alpha) const;
-    double inv_decay(const int k, const double alpha) const;
-    double line_search(const double alpha, const Vector& xk) const;
+    double exp_decay(const int k, const double alpha, const double mu) const;
+    double inv_decay(const int k, const double alpha, const double mu) const;
+    double line_search(const double alpha, const Vector& xk, const double sigma) const;
 
 };
 

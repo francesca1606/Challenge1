@@ -19,7 +19,7 @@ void Vector::setPoint(const std::vector<double> &s){
 
 //if the index is out of bounds the function returns 0 with a message
 double Vector::operator[] (unsigned int n) const{
-      if(n<point.size())
+      if(n< point.size())
          return point[n];
       else{
             std::cout << "index out of bounds";

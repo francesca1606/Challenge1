@@ -18,9 +18,9 @@ Vector gradientMethod::gradient_method(const params_for_GD & g) const{
 
     for( ; k<=g.max_iter; ++k){
         //alphak= step_method(alphak, flag, k, xk);
-        alphak =  compute_step <strat>(alphak,k, xk);  //MODIFICA PERCHè COSI NON VA
-        xk1= xk - alphak*eval_df(xk);
-        if((xk1 - xk).norm()< g.tol_x || (eval_df(xk1) - eval_df(xk)).norm < g.tol_res)
+        alphak =  compute_step <strat>(alphak,k, xk, g);  //MODIFICA PERCHè COSI NON VA
+        xk1= xk - alphak*df(xk);
+        if((xk1 - xk).norm()< g.tol_x || (df(xk1) - df(xk)).norm < g.tol_res)
             break;
         xk=xk1;
     }
@@ -47,16 +47,16 @@ params_for_GD gradientMethod::read_parameters() const{
 }
 
 
-double gradientMethod::exp_decay(const int k,const double alpha) const{
-    return alpha*exp(-g.mu*k);
+double gradientMethod::exp_decay(const int k,const double alpha, const double mu) const{
+    return alpha*exp(-mu*k);
 }
-double gradientMethod::inv_decay(const int k, const double alpha) const{
-    return alpha/(1+g.mu*k);
+double gradientMethod::inv_decay(const int k, const double alpha, const double mu) const{
+    return alpha/(1+ mu*k);
 }
-double gradientMethod::line_search(const double alpha, const Vector& xk) const {
-    if(g.sigma>0 || g.sigma<0.5){
-        const Vector s= xk - alpha*eval_df(xk);
-        if ( g.f(xk) - g.f(s) >= g.sigma*alpha*((eval_df(xk)).norm())^2 )
+double gradientMethod::line_search(const double alpha, const Vector& xk, const double sigma) const {   //serve qualcosa per leggere funzione
+    if(sigma>0 || sigma<0.5){
+        const Vector s= xk - alpha*df(xk);
+        if ( f(xk) - f(s) >= sigma*alpha*((df(xk)).norm())^2 )
           return alpha;
         else
             return line_search(alpha/2, xk);
@@ -68,10 +68,10 @@ double gradientMethod::line_search(const double alpha, const Vector& xk) const {
 
 
 template<strategies S>
-double gradientMethod::compute_step(const double alphak, const int k, const Vector &xk) const {
+double gradientMethod::compute_step(const double alphak, const int k, const Vector &xk, const params_for_GD &g) const {
     if constexpr(S==strategies::exp_decay)
-       return exp_decay(k, alphak);
+       return exp_decay(k, alphak, g.mu);
     if constexpr(S==strategies::inv_decay)
-       return inv_decay(k, alphak);
-    return line_search(alphak,xk);
+       return inv_decay(k, alphak, g.mu);
+    return line_search(alphak,xk, g.sigma);
 }
