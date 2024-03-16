@@ -1,5 +1,7 @@
 #include "Vector.hpp"
 #include <iostream>
+#include <string>
+#include "muparser_fun.hpp"
 
 
 
@@ -12,7 +14,13 @@ int main () {
     Vector t2({5,6,7});
     Vector t3= t1*2 -t2;
     t3.print();
-     
     
+    std::string funString ="x+y";
+    MuparserFun fun(funString);
+    double x=fun({5,5});
+    std::cout << x << std::endl;
+
+    
+     
     return 0;
 }

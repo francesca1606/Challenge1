@@ -14,7 +14,7 @@ Vector gradientMethod::gradient_method(const params_for_GD & g) const{
     double alphak= g.alpha0;
     int k=0;
 
-    constexpr strategies strat=strategies::exp_decay;  ///MODIFICA è da leggere da file
+    constexpr strategies strat=strategies::exp_decay; 
 
     for( ; k<=g.max_iter; ++k){
         //alphak= step_method(alphak, flag, k, xk);
@@ -41,6 +41,8 @@ params_for_GD gradientMethod::read_parameters() const{
   g.max_iter = data["parameters"].value("max_iter", 1);
   g.mu = data["parameters"].value("mu", 1.0);
   g.sigma = data["parameters"].value("sigma", 1.0);
+  g.f=data["functions"].value("f","");
+  g.df=data["functions"].value("df","");
   return g;
 }
 

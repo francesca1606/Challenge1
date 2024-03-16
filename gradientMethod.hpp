@@ -2,9 +2,11 @@
 #define GRADIENTMETHOD_H
 
 #include "Vector.hpp"
+#include <string>
 
 
 struct params_for_GD{
+    std::string f, df;
     Vector x0;
     double alpha0, tol_res, tol_x;
     int max_iter;
