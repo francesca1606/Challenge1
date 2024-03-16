@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "muparserx_fun.hpp"
+#include "muParserXFun.hpp"
 #include "Vector.hpp"
 
 int main () {

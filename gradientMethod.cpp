@@ -1,4 +1,5 @@
 #include "gradientMethod.hpp"
+#include "muparserx_fun.hpp"
 #include <iostream>
 #include <fstream>
 #include <math.h>
@@ -9,7 +10,7 @@ using json = nlohmann::json;
 
 
 Vector gradientMethod::gradient_method(const params_for_GD & g) const{
-    
+
     Vector xk=g.x0, xk1=g.x0;
     double alphak= g.alpha0;
     int k=0;
@@ -19,7 +20,7 @@ Vector gradientMethod::gradient_method(const params_for_GD & g) const{
     for( ; k<=g.max_iter; ++k){
         //alphak= step_method(alphak, flag, k, xk);
         alphak =  compute_step <strat>(alphak,k, xk, g);  //MODIFICA PERCHè COSI NON VA
-        xk1= xk - alphak*df(xk);
+        xk1= xk - alphak*g.df(xk);
         if((xk1 - xk).norm()< g.tol_x || (df(xk1) - df(xk)).norm < g.tol_res)
             break;
         xk=xk1;

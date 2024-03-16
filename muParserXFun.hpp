@@ -1,5 +1,5 @@
-#ifndef MUPARSERX_FUN_H
-#define MUPARSERX_FUN_H
+#ifndef MUPARSERXFUN_H
+#define MUPARSERXFUN_H
 
 #include <mpParser.h>
 #include <string>
@@ -31,4 +31,4 @@ public:
 };
 
 
-#endif /* MUPARSERX_FUN_H */
+#endif /* MUPARSERXFUN_H */
