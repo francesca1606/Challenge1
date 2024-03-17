@@ -26,7 +26,7 @@ After having done these steps, simply run make in the terminal
 -----------------
 
 
-### User's choices and changes ###
+## User's choices and changes ###
 
 You can change the parameters inside data.json to modify the parameters and the function to minimize.
 
@@ -41,6 +41,7 @@ data.json contains:
 - the function to minimize f
 - the exact gradient df
 - the number of variables dim
+
 <br/><br/>
 **Warnings**
 
@@ -49,7 +50,7 @@ As variables' names use x followed by a number >= 1
 sigma assumes values in (0, 0.5)
 
 x0 must be a vector of dimension dim; f is a dim-dimensional function; df is a dim_dimensional vector of dim-dimensional variables
-<br/><br/> 
+<br/><br/> <br/><br/>
 In gradient_method() function inside main.cpp, you may want to change the method used to update the step length att each iteration. To do so, you can modify this line:
 > constexpr strategies strat=strategies::exponential_decay;
 
