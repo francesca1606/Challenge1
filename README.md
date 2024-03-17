@@ -14,13 +14,11 @@ The file is divided into :
 - README
 - LICENSE
 - .gitignore  
-
-
-
+<br/><br/><br/>
 To run the code, you need to make some changes to the Makefile:
-- in ==CPPFLAGS==, substitute -I../pacs-examples/Examples/include/muparserx -I../pacs-examples/Examples/include with the paths to json.hpp and to muparserx
+- in CPPFLAGS, substitute -I../pacs-examples/Examples/include/muparserx -I../pacs-examples/Examples/include with the paths to json.hpp and to muparserx
 > CPPFLAGS ?= -O3 -Wall -I. -Wno-conversion-null -Wno-deprecated-declarations -Ipath/to/muparserx -Ipath/to/json.hpp
-- in ==LDFLAGS==, substitute -L../pacs-examples/Examples/lib with the path to your libraries' directory in order to allow the linking phase
+- in LDFLAGS, substitute -L../pacs-examples/Examples/lib with the path to your libraries' directory in order to allow the linking phase
 > LDFLAGS ?= -Lpath/to/libmuparserx.a         ??è quella giusta????????
 After having done these steps, simply run make in the terminal
 
@@ -43,18 +41,18 @@ data.json contains:
 - the function to minimize f
 - the exact gradient df
 - the number of variables dim
-
-**Warning**
+<br/><br/>
+**Warnings**
 
 As variables' names use x followed by a number >= 1
 
 sigma assumes values in (0, 0.5)
 
 x0 must be a vector of dimension dim; f is a dim-dimensional function; df is a dim_dimensional vector of dim-dimensional variables
-
-
+<br/><br/> 
 In gradient_method() function inside main.cpp, you may want to change the method used to update the step length att each iteration. To do so, you can modify this line:
 > constexpr strategies strat=strategies::exponential_decay;
+
 changing exponential_decay with inverse_decay or Armijo_rule
 
 FINITE DIFFERENCES DA SCEGLIERE
