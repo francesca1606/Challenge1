@@ -23,7 +23,6 @@ public:
      double norm() const;
      void print() const;
      
-
 };
 
 //overloading of operators needed for the Gradient Descent Method

@@ -1,26 +1,33 @@
 CXX      ?= g++
 CXXFLAGS ?= -std=c++20
-CPPFLAGS ?= -O3 -Wall -I. -Wno-conversion-null -Wno-deprecated-declarations -I../pacs-examples/Examples/include -I../pacs-examples/Examples/include/muparserx 
+CPPFLAGS ?= -O3 -Wall -I. -Wno-conversion-null -Wno-deprecated-declarations -I../pacs-examples/Examples/include/muparserx -I../pacs-examples/Examples/include  
 
 EXEC     = main
-LDFLAGS ?= -L../pacs-examples/Examples/lib   #è DA CAMBIARE (CURRENT DIRECTORY DI GETPOT)
+LDFLAGS ?= -L../pacs-examples/Examples/lib 
 LIBS  ?= -lmuparserx
 
-SRCS = $(wildcard *.cpp)                     #main.cpp Vector.cpp 
-OBJS = $(SRCS:.cpp=.o)
 
-HEADERS = $(wildcard *.hpp *.h)          #non so se con .h funziona        #Vector.hpp muparserx_fun.hpp 
+SRCS = $(wildcard *.cpp)                                #main.cpp Vector.cpp gradientMethod.cpp              
+OBJS = $(SRCS:.cpp=.o)
+HEADERS = Vector.h muParserXFun.hpp  gradientMethod.h             #$(wildcard *.hpp)  
+DEPS = $(SRCS:.cpp=.d)           
 
 all: $(EXEC)
 
-%.o: %.cpp  $(HEADERS)                       #gradientMethod.hpp
-	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $<
+$(EXEC): $(OBJS)                                     #%: %.o
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $^ $(LIBS) -o $@
 
-$(EXEC):  $(OBJS)                           #%: %.o   
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< $(LIBS) -o $@
+%.o: %.cpp $(HEADERS)             #Vector.h muParserXFun.hpp  gradientMethod.h                
+	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $< -o $@
+
+%.d: %.cpp
+	$(CXX) -MM $(CPPFLAGS) $< > $@
+
+# Include .d files
+-include $(DEPS)
 
 clean:
-	$(RM) *.o
+	$(RM) *.o *.d $(EXEC)
 
 distclean: clean
 	$(RM) *~
