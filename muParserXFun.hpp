@@ -3,45 +3,55 @@
 
 #include <mpParser.h>
 #include <string>
-#include "Vector.h"
+#include "Vector.h"       //vedi se mettere <vector>
 
 class muParserXFun {
 
 private:
-    mup::ParserX m_parser;
-
+    int m_n;
+    mup::ParserX m_fun;
+    std::string  m_expr;
+    std::vector<mup::Value> m_val;
+    std::vector<mup::Variable> m_var;
+    
 public:
     
     // Default constructor
-    muParserXFun(): m_parser(mup::pckALL_NON_COMPLEX | mup::pckMATRIX) {};
+    //muParserXFun(): m_fun(mup::pckALL_NON_COMPLEX), m_n(0) {};     
 
-    // Constructor that takes a string representing a mathematical expression
-    muParserXFun(const std::string& expr) : m_parser(mup::pckALL_NON_COMPLEX | mup::pckMATRIX) {
-        m_parser.SetExpr(expr);
+    // Constructor that takes the domain dimension (# of variables) and the mathematical expression
+    muParserXFun(int n,std::string expr) : m_n(n), m_fun(mup::pckALL_NON_COMPLEX), m_expr(expr), m_val(n, 0.0)
+    {
+        m_fun.SetExpr(expr);
+        for (int i=0; i<m_n; ++i){
+            m_var.push_back(&m_val[i]);
+            std::string varName = "x" + std::to_string(i+1);  
+            m_fun.DefineVar(varName, m_var[i]);
+        }
     }
 
-    // Function to evaluate the expression with a given set of variables
-    double evaluate(const std::vector<double> &vars) {
-        // Assuming the vector elements are to be used as variables in the parser
-        for (size_t i = 0; i < vars.size(); ++i) {
-            std::string varName = "x" + std::to_string(i);
-            //mup::Value val=vars[i];                        //C'è QUALCHE PROBLEMA QUI PER SEGMENTATION FAULT
-            //mup::Variable var(varName, val);
-            m_parser.DefineVar(varName, mup::Variable(&mup::Value(vars[i])));
-        }
+    // CONSTRUCTOR IN CASO DI GRADIENTE ....  //però è dare fare per tutte le dimensioni.....
+    muParserXFun(muParserXFun f, double epsilon)
+    {
+         
+    }
+
+
+    
+
+    // Function to evaluate the expression with a given set of variables' values
+    double evaluate(const std::vector<double> &x) {
+        if(m_n==x.size()) {
+        for (int i=0; i<m_n; ++i)
+            m_var[i]=x[i];
+
         // Evaluate the expression
-        double result = m_parser.Eval().GetFloat();
-
-        /*for (size_t i = 0; i < vars.size(); ++i) {
-             std::string varName = "x" + std::to_string(i);
-             mup::Variable *var = & (m_parser.GetVar(varName));
-            if (var) {
-            delete var->GetValue(); // Delete the mup::Value object
-            var->SetValue(nullptr); // Set the pointer to nullptr to avoid dangling pointer
-            }
-        }*/
-
-        return result;
+        return m_fun.Eval().GetFloat();
+        }
+        else {
+            std::cerr<<"wrong vector dimensions" <<std::endl;
+            return -1.0;
+        }
     }
 };
 
