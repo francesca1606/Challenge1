@@ -17,9 +17,13 @@ The file is divided into :
 <br/><br/><br/>
 To run the code, you need to make some changes to the Makefile:
 - in CPPFLAGS, substitute -I../pacs-examples/Examples/include/muparserx -I../pacs-examples/Examples/include with the paths to json.hpp and to muparserx
+
           > CPPFLAGS ?= -O3 -Wall -I. -Wno-conversion-null -Wno-deprecated-declarations -Ipath/to/muparserx -Ipath/to/json.hpp
+
 - in LDFLAGS, substitute -L../pacs-examples/Examples/lib with the path to your libraries' directory in order to allow the linking phase
+
           > LDFLAGS ?= -Lpath/to/libmuparserx.a         ??è quella giusta????????
+
 
 After having done these steps, simply run make in the terminal
 If you want to remove the object file and the executable, run make clean
