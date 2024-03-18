@@ -7,27 +7,29 @@ LDFLAGS ?= -L../pacs-examples/Examples/lib
 LIBS  ?= -lmuparserx
 
 
-SRCS = $(wildcard *.cpp)                                #main.cpp Vector.cpp gradientMethod.cpp              
-OBJS = $(SRCS:.cpp=.o)
-HEADERS = Vector.h muParserXFun.hpp  gradientMethod.h             #$(wildcard *.hpp)  
-DEPS = $(SRCS:.cpp=.d)           
+SRCS =  main.cpp    #$(wildcard *.cpp)                                            
+OBJS =  $(SRCS:.cpp=.o)
+HEADERS = $(wildcard *.hpp)  
+#DEPS = $(SRCS:.cpp=.d)           
 
 all: $(EXEC)
 
-$(EXEC): $(OBJS)                                     #%: %.o
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) $^ $(LIBS) -o $@
+%.o: %.cpp $(HEADERS)                             # -o $@ dopo $(EXEC)
+	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $<             
 
-%.o: %.cpp $(HEADERS)             #Vector.h muParserXFun.hpp  gradientMethod.h                
-	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $< -o $@
+$(EXEC): $(OBJS)                                     #%: %.o    ^ instead of <
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< $(LIBS) -o $@
 
-%.d: %.cpp
-	$(CXX) -MM $(CPPFLAGS) $< > $@
+
+
+#%.d: %.cpp
+#	$(CXX) -MM $(CPPFLAGS) $< > $@
 
 # Include .d files
--include $(DEPS)
+#-include $(DEPS)
 
-clean:
-	$(RM) *.o *.d $(EXEC)
+clean:                       # *.d
+	@ $(RM) *.o $(EXEC)
 
 distclean: clean
-	$(RM) *~
+	@ $(RM) *~

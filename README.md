@@ -21,6 +21,7 @@ To run the code, you need to make some changes to the Makefile:
 - in LDFLAGS, substitute -L../pacs-examples/Examples/lib with the path to your libraries' directory in order to allow the linking phase
 > LDFLAGS ?= -Lpath/to/libmuparserx.a         ??è quella giusta????????
 After having done these steps, simply run make in the terminal
+If you want to remove the object file and the executable, run make clean
 
 
 -----------------
@@ -51,9 +52,16 @@ sigma assumes values in (0, 0.5)
 
 x0 must be a vector of dimension dim; f is a dim-dimensional function; df is a dim_dimensional vector of dim-dimensional variables
 <br/><br/> <br/><br/>
+For the minimization, you can choose to employ the exact gradient, passed through data.json, and an approximated gradient (centered scheme). To do so, when the program asks you, type in the terminal either   
+
+exact   
+
+or    
+
+finite differences
+<br/><br/><br/>
 In gradient_method() function inside main.cpp, you may want to change the method used to update the step length att each iteration. To do so, you can modify this line:
 > constexpr strategies strat=strategies::exponential_decay;
 
 changing exponential_decay with inverse_decay or Armijo_rule
 
-FINITE DIFFERENCES DA SCEGLIERE

@@ -2,6 +2,9 @@
 //The user may choose between reading the exact gradient from the provided data.json file
 //or the computation of an approximated gradient through finite differences 
 
+#ifndef HH_PARAMETERS_HH
+#define HH_PARAMETERS_HH
+
 #include "muParserXFun.hpp"
 #include <fstream>
 #include "json.hpp"
@@ -45,7 +48,11 @@ void read_parameters(params_for_GD & g) {
   
 
   g.fun=muParserXFun(n,f_string);    
+  g.dfun.resize(df_string.size());
   for (int i=0; i< df_string.size(); ++i)
        g.dfun[i]= muParserXFun(n,df_string[i]);
   
-}
+};
+
+
+#endif // HH_PARAMETERS_HH
