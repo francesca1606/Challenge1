@@ -8,6 +8,7 @@
 #include "muParserXFun.hpp"
 #include <fstream>
 #include "json.hpp"
+#include <string>
 
 using Vector=std::vector<double>;
 using json = nlohmann::json;
@@ -15,12 +16,13 @@ using json = nlohmann::json;
 
 
 struct params_for_GD{
-    muParserXFun fun;
-    std::vector <muParserXFun> dfun;
+    std::string f_string;
+    std::vector <std::string> df_string;
     Vector x0;
     double alpha0, tol_res, tol_x;
     int max_iter;
     double mu, sigma;
+    int dim;
 };
 
 //reads parameters from a json file (data.json) and returns a params_for_GD object
@@ -40,17 +42,10 @@ void read_parameters(params_for_GD & g) {
   g.sigma = data["parameters"].value("sigma", 1.0);
   
   //reading function and gradient (vector of functions)
-  int n= data["functions"].value("dim", 0);
-  std::string f_string=data["functions"].value("f","");
-
-  //OPTION FOR GRADIENT!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  std::vector<std::string> df_string=data["functions"]["df"];
+  g.dim= data["functions"].value("dim", 0);
+  g.f_string=data["functions"].value("f","");
+  g.df_string=data["functions"]["df"];
   
-
-  g.fun=muParserXFun(n,f_string);    
-  g.dfun.resize(df_string.size());
-  for (int i=0; i< df_string.size(); ++i)
-       g.dfun[i]= muParserXFun(n,df_string[i]);
   
 };
 

@@ -70,7 +70,7 @@ double inv_decay(const int k, const double alpha, const double mu) {
     return alpha/(1+ mu*k);
 };
 
-double line_search(const double alpha, const Vector& xk, const double sigma, muParserXFun f, std::vector<muParserXFun> df)  {   //serve qualcosa per leggere funzione
+double line_search(const double alpha, const Vector& xk, const double sigma, muParserXFun &f, std::vector<muParserXFun> &df)  {   //serve qualcosa per leggere funzione
     if(sigma>0 || sigma<0.5){
         Vector s(xk.size()), normk=s;
         
@@ -89,12 +89,12 @@ double line_search(const double alpha, const Vector& xk, const double sigma, muP
 };
 
 template<strategies S>
-double compute_step(const double alphak, const int k, const Vector &xk, const params_for_GD &g)  {
+double compute_step(const double alphak, const int k, const Vector &xk, params_for_GD &g, muParserXFun & f, std::vector<muParserXFun> &df)  {
     if constexpr(S==strategies::exponential_decay)
        return exp_decay(k, alphak, g.mu);
     if constexpr(S==strategies::inverse_decay)
        return inv_decay(k, alphak, g.mu);
-    return line_search(alphak,xk, g.sigma, g.fun, g.dfun);
+    return line_search(alphak,xk, g.sigma, f, df);
 };
 
 

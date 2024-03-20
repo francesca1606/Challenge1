@@ -64,6 +64,8 @@ exact
 or    
 
 finite differences
+
+In the case of finite differences, you can also modify the value of epsilon (the default is 1e-6).
 <br/><br/><br/>
 In gradient_method() function inside main.cpp, you may want to change the method used to update the step length att each iteration. To do so, you can modify this line:
 > constexpr strategies strat=strategies::exponential_decay;
