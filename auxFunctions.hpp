@@ -40,7 +40,7 @@ void print(const Vector &v) {
 Vector operator-(const Vector &v1, const Vector &v2){
     Vector result=v1;
     if(v1.size()==v2.size())
-      for(int i=0; i<v1.size(); ++i)
+      for(unsigned int i=0; i<v1.size(); ++i)
           result[i]-= v2[i];
     return result;
 };
@@ -74,7 +74,7 @@ double line_search(const double alpha, const Vector& xk, const double sigma, muP
     if(sigma>0 || sigma<0.5){
         Vector s(xk.size()), normk=s;
         
-        for (int i=0; i<xk.size(); ++i){
+        for (unsigned int i=0; i<xk.size(); ++i){
             normk[i]= df[i].evaluate(xk);
             s[i]=  xk[i] - alpha*normk[i];
         }

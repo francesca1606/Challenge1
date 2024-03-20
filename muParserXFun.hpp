@@ -12,7 +12,7 @@ using Vector=std::vector<double>;
 class muParserXFun {
 
 private:
-    int m_n;
+    unsigned int m_n;
     std::string  m_expr;
     std::vector<mup::Value>    m_val;
     std::vector<mup::Variable> m_var;
@@ -21,13 +21,13 @@ private:
 public:    
 
     // Constructor that takes the domain dimension (# of variables) and the mathematical expression
-    muParserXFun(int n,std::string expr) : m_n(n), m_fun(mup::pckALL_NON_COMPLEX), m_expr(expr),  m_val(n, mup::Value(0.))
+    muParserXFun(int n,std::string expr) : m_n(n),  m_expr(expr),  m_val(n, mup::Value(0.)), m_fun(mup::pckALL_NON_COMPLEX)
     {
         m_var.reserve(m_n);
-        for (int i=0; i<m_n; ++i)
+        for (unsigned int i=0; i<m_n; ++i)
             m_var.emplace_back(&m_val[i]);
             //m_var[i]= &m_val[i];
-        for (int i=0; i<m_n; ++i){
+        for (unsigned int i=0; i<m_n; ++i){
             std::string varName = "x" + std::to_string(i+1);  
             m_fun.DefineVar(varName, m_var[i]);
         }
@@ -39,7 +39,7 @@ public:
     // Function to evaluate the expression with a given set of variables' values
     double evaluate(const Vector &x) {
      if(m_n==x.size()) {
-         for (int i=0; i<m_n; ++i){
+         for (unsigned int i=0; i<m_n; ++i){
              m_val[i]= x[i]; 
          }
 

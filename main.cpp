@@ -65,17 +65,17 @@ void gradient_method(Vector & xk) {
     for(k=0 ; k<=g.max_iter; ++k){
         std::cout << k << std::endl;
        
-        alphak =  compute_step <strat>(alphak,k, xk, g, fun, dfun); 
+        alphak = compute_step <strat>(alphak,k, xk, g, fun, dfun); 
 
         Vector norm_gradk(xk.size()), norm_gradk1(xk.size());
         
         if (gradient_choice=="exact"){   //not efficient to evaluate it every time !!!!!!!!!!!!!
-          for (int i=0; i<xk.size(); ++i){
+          for (unsigned int i=0; i<xk.size(); ++i){
             {    
               print(xk);       
               xk1[i]= xk[i] - alphak*dfun[i].evaluate(xk);      
               norm_gradk[i]= dfun[i].evaluate(xk);
-              norm_gradk1[i]= dfun[i].evaluate(xk);
+              norm_gradk1[i]=dfun[i].evaluate(xk);
             }
           }   
         }
@@ -94,7 +94,7 @@ void gradient_method(Vector & xk) {
         xk=xk1;
     }
 
-    std::cout << "\nNumber of iterations: " << k-1 << std::endl;
+    std::cout << "\nNumber of iterations: " << k << std::endl;
     std::cout << "Point of minimum: ";
     print(xk);
     std::cout << "Minimum: " << fun.evaluate(xk) << std::endl;
