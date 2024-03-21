@@ -28,12 +28,13 @@ struct params_for_GD{
 //reads parameters from a json file (data.json) and returns a params_for_GD object
 void read_parameters(params_for_GD & g) {
   std::ifstream f("data.json");
-  json data = json::parse(f);
+  //json data = json::parse(f);
+  json data;
+  f >> data;
 
   //params_for_GD g;
   
-  Vector x0 = data["parameters"]["x0"];    //perchè è servito farlo????
-  g.x0=x0;
+  g.x0 = data["parameters"]["x0"].get<Vector>();    //perchè è servito farlo????
   g.alpha0 = data["parameters"].value("alpha0", 1.0);
   g.tol_res = data["parameters"].value("tol_res", 0.0);
   g.tol_x = data["parameters"].value("tol_x", 0.0);
@@ -44,9 +45,9 @@ void read_parameters(params_for_GD & g) {
   //reading function and gradient (vector of functions)
   g.dim= data["functions"].value("dim", 0);
   g.f_string=data["functions"].value("f","");
-  g.df_string=data["functions"]["df"];
-  
-  
+  g.df_string=data["functions"][("df")].get<std::vector<std::string>>();
+  for (auto v:g.df_string)
+  std::cout << v << "   ";
 };
 
 

@@ -6,7 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <math.h>
+#include <cmath>
 #include "json.hpp"
 #include "muParserXFun.hpp"
 #include "parameters.hpp"
@@ -21,7 +21,7 @@ using json = nlohmann::json;
 
 //calculates the norm of a Vector object
 double norm (const Vector &v) {
-    double res=0;
+    double res=0.;
     for(auto &i: v ){
         res += i*i;
     }
@@ -38,10 +38,10 @@ void print(const Vector &v) {
 //overloading of - operator
 //if the sizes of the two vectors don't coincide, the function returns the first vector passed
 Vector operator-(const Vector &v1, const Vector &v2){
-    Vector result=v1;
+    Vector result(v1.size());
     if(v1.size()==v2.size())
       for(unsigned int i=0; i<v1.size(); ++i)
-          result[i]-= v2[i];
+          result[i]= v1[i] - v2[i];
     return result;
 };
 
@@ -70,31 +70,32 @@ double inv_decay(const int k, const double alpha, const double mu) {
     return alpha/(1+ mu*k);
 };
 
-double line_search(const double alpha, const Vector& xk, const double sigma, muParserXFun &f, std::vector<muParserXFun> &df)  {   //serve qualcosa per leggere funzione
+/*double line_search(const double alpha, const Vector& xk, const double sigma, muParserXFun &f){  //, std::vector<muParserXFun> &df)  {   
     if(sigma>0 || sigma<0.5){
         Vector s(xk.size()), normk=s;
         
         for (unsigned int i=0; i<xk.size(); ++i){
-            normk[i]= df[i].evaluate(xk);
+            normk[i]= df[i](xk);
             s[i]=  xk[i] - alpha*normk[i];
         }
+
         
-        if ( f.evaluate(xk) - f.evaluate(s) >= sigma*alpha*norm(normk)*norm(normk) )
+        if ( f(xk) - f(s) >= sigma*alpha*norm(normk)*norm(normk) )
           return alpha;
         else
-            return line_search(alpha/2, xk, sigma, f, df);
+            return line_search(alpha/2, xk, sigma, f);
     }
     std::cerr<< "Sigma has to be in the interval (0, 0.5)" << std::endl;
     return -1. ;
-};
+};*/
 
 template<strategies S>
-double compute_step(const double alphak, const int k, const Vector &xk, params_for_GD &g, muParserXFun & f, std::vector<muParserXFun> &df)  {
+double compute_step(const double alpha, const int k, const Vector &xk, params_for_GD &g, muParserXFun & f){  //, std::vector<muParserXFun> &df)  {
     if constexpr(S==strategies::exponential_decay)
-       return exp_decay(k, alphak, g.mu);
+       return exp_decay(k, alpha, g.mu);
     if constexpr(S==strategies::inverse_decay)
-       return inv_decay(k, alphak, g.mu);
-    return line_search(alphak,xk, g.sigma, f, df);
+       return inv_decay(k, alpha, g.mu);
+    //return line_search(alpha,xk, g.sigma, f);  //, df);
 };
 
 
