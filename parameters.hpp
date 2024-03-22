@@ -46,8 +46,7 @@ void read_parameters(params_for_GD & g) {
   g.dim= data["functions"].value("dim", 0);
   g.f_string=data["functions"].value("f","");
   g.df_string=data["functions"][("df")].get<std::vector<std::string>>();
-  for (auto v:g.df_string)
-  std::cout << v << "   ";
+  
 };
 
 

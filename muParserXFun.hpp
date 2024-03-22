@@ -129,8 +129,8 @@ public:
     }
 private:
     Vector m_vars;
-    mu::Parser m_parser;
     std::string m_expression;
+    mu::Parser m_parser;
 };
 
 #endif // HH_MUPARSERXFUN_HH

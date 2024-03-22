@@ -56,6 +56,29 @@ Vector operator*(double alpha, const Vector &v) {
 
 
 
+
+//computing the gradient of the function f given using finite differences
+//method evaluates the gradient in a Vector x
+Vector gradFiniteDiff ( muParserXFun f, const Vector &x)
+{
+    const double epsilon=1e-6;  // CAMBIARE!!!!!
+    int n= x.size();
+    Vector grad(n,0.0);    
+    f=muParserXFun(n,f.getExpression());
+
+    //using a centered scheme to compute each partial derivative 
+    for(int i=0; i<n ; ++i){
+        Vector x_plus=x;
+        x_plus[i] += epsilon;
+        Vector x_minus=x;
+        x_minus[i] -= epsilon;
+        grad[i]= (f(x_plus) - f(x_minus))/(2*epsilon);
+    }
+    
+    return grad;
+}
+
+
 //Strategies to calculate step alphak at each iteration
 
 enum strategies{
@@ -101,41 +124,3 @@ double compute_step(const double alpha, const int k, const Vector &xk, params_fo
 
 
 #endif // HH_AUXFUNCTIONS_HH
-
-
-
-
-/*Vector& Vector::operator=(const Vector& v){
-      if(&v != this)
-          point= v.point;
-      return *this;
-}
-
-std::vector<double> Vector::getPoint() const{
-      return point;
-}
-
-void Vector::setPoint(const std::vector<double> &s){
-      point=s;
-}
-
-//if the index is out of bounds the function returns 0 with a message
-double Vector::operator[] (unsigned int n) const{
-      if(n< point.size())
-         return point[n];
-      else{
-            std::cout << "index out of bounds";
-            return 0.;
-      }
-}
-
-
-
-//returns size of the Vcetor
-unsigned int Vector::size() const{
-      return point.size();
-}
-
-
-
-*/
