@@ -23,9 +23,9 @@ The include folder contains:
 - parameters.hpp, that defines a struct for the parameters read from file data.json
 <br/><br/><br/>
 To run the code, you need to make some changes to the Makefile:
-- in CPPFLAGS, substitute -I../pacs-examples/Examples/include/muparserx -I../pacs-examples/Examples/include with the paths to json.hpp and to muparserx
+- in CPPFLAGS, substitute -I../pacs-examples/Examples/include/muparserx -I../pacs-examples/Examples/include with the paths to json.hpp 
 
-          CPPFLAGS ?= -O3 -Wall -I. -Wno-conversion-null -Wno-deprecated-declarations -Ipath/to/muparser -Ipath/to/json.hpp
+          CPPFLAGS ?= -O3 -Wall -I. -Wno-conversion-null -Wno-deprecated-declarations -Ipath/to/json.hpp
 
 - in LDFLAGS, substitute -L../pacs-examples/Examples/lib with the path to your libraries' directory in order to allow the linking phase with muparser symbolic links
 
