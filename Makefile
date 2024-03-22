@@ -1,26 +1,26 @@
 CXX      ?= g++
 CXXFLAGS ?= -std=c++20
-CPPFLAGS ?= -g -Wall -I. -I./include -Wno-conversion-null -Wno-deprecated-declarations -I../pacs-examples/Examples/include -I../pacs-examples/Examples/include/muparser   
+CPPFLAGS ?= -03 -Wall -I. -I./include -Wno-conversion-null -Wno-deprecated-declarations -I../pacs-examples/Examples/include -I../pacs-examples/Examples/include/muparser   
 
 EXEC     = main
-LDFLAGS ?= -L../pacs-examples/Examples/lib  #-Wl,-rpath,../pacs-examples/Examples/lib               # 
+LDFLAGS ?= -L../pacs-examples/Examples/lib                 
 LIBS  ?= -lmuparser
 
 
-SRCS =  main.cpp    #$(wildcard *.cpp)                                            
+SRCS =  main.cpp                                              
 OBJS =  $(SRCS:.cpp=.o)
 HEADERS = $(wildcard include/*.hpp)  
-#DEPS = $(SRCS:.cpp=.d)           
+          
 
 all: $(EXEC)
 
-%.o: %.cpp $(HEADERS)                             # -o $@ dopo $(EXEC)
+%.o: %.cpp $(HEADERS)                            
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $<             
 
-$(EXEC): $(OBJS)                                     #%: %.o    ^ instead of <
+$(EXEC): $(OBJS)                                     
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< $(LIBS) -o $@
 
-clean:                       # *.d
+clean:                       
 	@ $(RM) *.o $(EXEC)
 
 distclean: clean
