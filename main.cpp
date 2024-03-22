@@ -15,15 +15,14 @@ int main () {
     std::string gradient_choice;
     std::cin >> gradient_choice;
 
+    //xk will be updated with the point of minimum of the function
     Vector xk={};
 
     // call gradient method
-    if(gradient_choice=="exact"){
+    if(gradient_choice=="exact")
         gradient_method_exact(xk);
-    }
-    else if(gradient_choice=="finite"){
-             gradient_method_finite(xk);
-    }
-     
+    else if(gradient_choice=="finite")
+        gradient_method_finite(xk);
+
     return 0;
 }

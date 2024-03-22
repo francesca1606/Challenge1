@@ -72,3 +72,7 @@ In gradient_method() function inside main.cpp, you may want to change the method
 
 changing exponential_decay with inverse_decay or Armijo_rule
 
+
+// CAMBIA, PUò ESSERE UTILE  !!!!!!!
+//The user may choose between reading the exact gradient from the provided data.json file
+//or the computation of an approximated gradient through finite differences

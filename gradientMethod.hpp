@@ -12,7 +12,8 @@
 
 using Vector= std::vector<double>;
 
-//gradient method for computing the minimum of a function using the exact gradient contained in data.json
+
+//Gradient method for computing the minimum of a function using the exact gradient contained in data.json
 void gradient_method_exact(Vector & xk) {
     
     //create the struct for the parameters and read them from data.json
@@ -27,8 +28,9 @@ void gradient_method_exact(Vector & xk) {
     bool break_cicle=false;
     double residual_norm=0.;
 
-    //strategy to calculate the step at each iteration
-    constexpr strategies strat=strategies::exponential_decay; 
+    //strategy to calculate the step at each iteration 
+    constexpr strategies strat=strategies::inverse_decay; 
+    constexpr type_of_grad T=type_of_grad::exact;
 
 
     muParserXFun fun(g.dim,g.f_string);  
@@ -47,7 +49,7 @@ void gradient_method_exact(Vector & xk) {
     while(k<=g.max_iter && !break_cicle){
 
         //compute step for iteration k
-        alphak = compute_step <strat>(g.alpha0,k, xk, g, fun); 
+        alphak = compute_step <strat, T>(g.alpha0,k, xk, g, fun); 
 
         //update xk1
         for (unsigned int i=0; i<xk.size(); ++i){
@@ -87,7 +89,7 @@ void gradient_method_exact(Vector & xk) {
 };
 
 
-//gradient method for computing the minimum of a function using the gradient computed through centered finite differences
+//Gradient method for computing the minimum of a function using the gradient computed through centered finite differences
 void gradient_method_finite(Vector &xk){
         
     //create the struct for the parameters and read them from data.json
@@ -103,7 +105,9 @@ void gradient_method_finite(Vector &xk){
     double residual_norm=0.;
     
     //strategy to calculate the step at each iteration
-    constexpr strategies strat=strategies::exponential_decay;
+    constexpr strategies strat=strategies::inverse_decay;
+    constexpr type_of_grad T= type_of_grad::finite_grad;
+
 
     muParserXFun fun(g.dim,g.f_string);  
     //otherwise parser doesn't seem to read well the variables
@@ -113,16 +117,13 @@ void gradient_method_finite(Vector &xk){
     while(k<=g.max_iter && !break_cicle){
     
         //compute step for iteration k
-        alphak = compute_step <strat>(g.alpha0,k, xk, g, fun); 
+        alphak = compute_step <strat, T>(g.alpha0,k, xk, g, fun ); 
 
         //update xk1
-        for(int i=0;i<g.dim;++i)
-            xk1[i]=xk[i] -alphak*gradFiniteDiff(fun,xk)[i];
-
+        xk1=xk -alphak*gradFiniteDiff(fun, xk);
+        
         //calculate gradient of xk1 for the arrest criteria
-        Vector gradk1(g.dim);
-        for(int i=0;i<g.dim;++i)
-            gradk1[i]=gradFiniteDiff(fun,xk1)[i];    //-gradFiniteDiff(fun,xk)[i];
+        Vector gradk1=gradFiniteDiff(fun,xk1);                //-gradFiniteDiff(fun,xk)[i];
 
         //stop criterias
         Vector difference= xk1 - xk;
@@ -148,8 +149,6 @@ void gradient_method_finite(Vector &xk){
     std::cout << "Minimum value: " << fun(xk) << std::endl;
     std::cout << "Residual: " << residual_norm << std::endl;
     std::cout << "\n";
-
-    return;
 
 }
 
