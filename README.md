@@ -76,8 +76,8 @@ finite
 
 In the case of finite differences, you can also modify the value of epsilon.
 <br/><br/><br/>
-In gradient_method() function inside main.cpp, you may want to change the method used to update the step length att each iteration. To do so, you can modify this line:
-> constexpr strategies strat=strategies::exponential_decay;
+In the functions gradient_method_exact and gradient_method_finite inside gradientMethod.hpp, you may want to change the method used to update the step length at each iteration. To do so, you can modify this line:
+> constexpr strategies strat=strategies::inverse_decay;
 
 changing inverse_decay with exponential_decay  or Armijo_rule
 
