@@ -6,7 +6,7 @@
 
 #include <vector>
 #include <string>
-#include "muParserXFun.hpp"
+#include "muParserFun.hpp"
 #include "parameters.hpp"
 #include "auxFunctions.hpp"
 
@@ -33,17 +33,17 @@ void gradient_method_exact(Vector & xk) {
     constexpr type_of_grad T=type_of_grad::exact;
 
 
-    muParserXFun fun(g.dim,g.f_string);  
+    muParserFun fun(g.dim,g.f_string);  
     //otherwise parser doesn't seem to read well the variables
-    fun = muParserXFun(g.dim,fun.getExpression());
+    fun = muParserFun(g.dim,fun.getExpression());
 
-    std::vector<muParserXFun> dfun;   
+    std::vector<muParserFun> dfun;   
     for (int i=0; i< g.dim; ++i){
        dfun.emplace_back(g.dim,g.df_string[i] );  
     }
     //otherwise parser doesn't seem to read well the variables
     for(auto & f:dfun)
-        f = muParserXFun(g.dim,f.getExpression());
+        f = muParserFun(g.dim,f.getExpression());
   
 
     while(k<=g.max_iter && !break_cicle){
@@ -109,9 +109,9 @@ void gradient_method_finite(Vector &xk){
     constexpr type_of_grad T= type_of_grad::finite_grad;
 
 
-    muParserXFun fun(g.dim,g.f_string);  
+    muParserFun fun(g.dim,g.f_string);  
     //otherwise parser doesn't seem to read well the variables
-    fun=muParserXFun(g.dim,fun.getExpression());
+    fun=muParserFun(g.dim,fun.getExpression());
 
 
     while(k<=g.max_iter && !break_cicle){
@@ -120,10 +120,10 @@ void gradient_method_finite(Vector &xk){
         alphak = compute_step <strat, T>(g.alpha0,k, xk, g, fun ); 
 
         //update xk1
-        xk1=xk -alphak*gradFiniteDiff(fun, xk);
+        xk1=xk -alphak*gradFiniteDiff(fun, xk, g.epsilon);
         
         //calculate gradient of xk1 for the arrest criteria
-        Vector gradk1=gradFiniteDiff(fun,xk1);                //-gradFiniteDiff(fun,xk)[i];
+        Vector gradk1=gradFiniteDiff(fun,xk1, g.epsilon);                //-gradFiniteDiff(fun,xk)[i];
 
         //stop criterias
         Vector difference= xk1 - xk;

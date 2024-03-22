@@ -3,7 +3,6 @@
 #ifndef HH_PARAMETERS_HH
 #define HH_PARAMETERS_HH
 
-#include "muParserXFun.hpp"
 #include <fstream>
 #include "json.hpp"
 #include <string>
@@ -17,7 +16,7 @@ struct params_for_GD{
     std::string f_string;
     std::vector <std::string> df_string;
     Vector x0;
-    double alpha0, tol_res, tol_x;
+    double alpha0, tol_res, tol_x, epsilon;
     int max_iter, Armijo_iter;
     double mu, sigma;
     int dim;
@@ -35,6 +34,7 @@ void read_parameters(params_for_GD & g) {
   g.alpha0 = data["parameters"].value("alpha0", 1.0);
   g.tol_res = data["parameters"].value("tol_res", 0.0);
   g.tol_x = data["parameters"].value("tol_x", 0.0);
+  g.epsilon = data["parameters"].value("epsilon", 0.0);
   g.max_iter = data["parameters"].value("max_iter", 1);
   g.mu = data["parameters"].value("mu", 1.0);
   g.sigma = data["parameters"].value("sigma", 1.0);

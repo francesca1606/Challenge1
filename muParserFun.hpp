@@ -1,5 +1,5 @@
-#ifndef HH_MUPARSERXFUN_HH
-#define HH_MUPARSERXFUN_HH
+#ifndef HH_MUPARSERFUN_HH
+#define HH_MUPARSERFUN_HH
 
 #include <muParser.h>
 #include <string>
@@ -8,7 +8,7 @@ using Vector=std::vector<double>;
 
 
 //Class used to define a parser able to evaluate a function given a vector of doubles
-class muParserXFun{
+class muParserFun{
 
 private:
     Vector      m_vars;
@@ -17,7 +17,7 @@ private:
 
 public:
 
-    muParserXFun(int n, const std::string &expression) {
+    muParserFun(int n, const std::string &expression) {
         m_expr=expression;
         m_vars.resize(n);
         for (int i = 0; i < n; ++i) {
@@ -49,4 +49,4 @@ public:
 
 };
 
-#endif // HH_MUPARSERXFUN_HH
+#endif // HH_MUPARSERFUN_HH

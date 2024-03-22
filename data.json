@@ -4,6 +4,7 @@
         "alpha0":       0.1,
         "tol_res":      1e-6,
         "tol_x":        1e-6,
+        "epsilon":      1e-6,
         "max_iter":     100000,
         "mu":           0.2,
         "sigma":        0.25,
