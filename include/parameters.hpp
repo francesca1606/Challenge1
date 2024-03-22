@@ -40,7 +40,7 @@ void read_parameters(params_for_GD & g) {
   g.sigma = data["parameters"].value("sigma", 1.0);
   g.Armijo_iter = data["parameters"].value("Armijo_iter", 1);
   
-  //reading function and gradient (vector of functions)
+  //reading the strings for function and gradient (vector of functions)
   g.dim= data["functions"].value("dim", 0);
   g.f_string=data["functions"].value("f","");
   g.df_string=data["functions"][("df")].get<std::vector<std::string>>();

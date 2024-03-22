@@ -31,6 +31,8 @@ To run the code, you need to make some changes to the Makefile:
 
           LDFLAGS ?= -Lpath/to/libmuparser.so 
 
+If the program still cannot find these libraries, it might be necessary to update LD_LIBRARY_PATH through the terminal:
+          LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/lib
 
 After having done these steps, simply run make in the terminal
 If you want to remove the object file and the executable, run make clean

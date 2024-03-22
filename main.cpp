@@ -6,8 +6,6 @@
 using Vector=std::vector<double>;
 
 
-//Vector gradFiniteDiff(muParserXFun f, const Vector &x,  const double epsilon=1e-6);  //CAMBIA EPSILON!!!!!
-
 int main () {
 
     //asking the user to choose between the exact gradient and the finite differences gradient

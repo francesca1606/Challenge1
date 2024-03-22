@@ -38,9 +38,9 @@ void gradient_method_exact(Vector & xk) {
     fun = muParserFun(g.dim,fun.getExpression());
 
     std::vector<muParserFun> dfun;   
-    for (int i=0; i< g.dim; ++i){
+    for (int i=0; i< g.dim; ++i)
        dfun.emplace_back(g.dim,g.df_string[i] );  
-    }
+    
     //otherwise parser doesn't seem to read well the variables
     for(auto & f:dfun)
         f = muParserFun(g.dim,f.getExpression());
@@ -52,32 +52,27 @@ void gradient_method_exact(Vector & xk) {
         alphak = compute_step <strat, T>(g.alpha0,k, xk, g, fun); 
 
         //update xk1
-        for (unsigned int i=0; i<xk.size(); ++i){
+        for (unsigned int i=0; i<xk.size(); ++i)
               xk1[i]= xk[i] - alphak*dfun[i](xk);      
-        }
         
         //calculate gradient of xk1 for the arrest criteria
         Vector gradk1(g.dim);
-        for (unsigned int i=0; i<xk.size(); ++i){
+        for (unsigned int i=0; i<xk.size(); ++i)
               gradk1[i]=dfun[i](xk1);
-        }
         
         //stop criterias
         Vector difference= xk1 - xk;
         residual_norm= norm(gradk1);
-        if(  norm(difference) < g.tol_x || residual_norm < g.tol_res)  {
+        if(  norm(difference) < g.tol_x || residual_norm < g.tol_res)  
              break_cicle=true;
-        } 
 
         xk=xk1;
         k++;
     }
 
-    //if the maximum number of iterations is reached, there's no convergence
-    if( !break_cicle ){
+    //if the maximum number of iterations is reached, xk is still updated but the user is warned
+    if( !break_cicle )
         std::cout << "The method didn't converge in " << g.max_iter << " iterations\n";
-        return;
-    }
 
     std::cout << "\nNumber of iterations: " << k-1 << std::endl;
     std::cout << "Point of minimum: ";
@@ -123,25 +118,22 @@ void gradient_method_finite(Vector &xk){
         xk1=xk -alphak*gradFiniteDiff(fun, xk, g.epsilon);
         
         //calculate gradient of xk1 for the arrest criteria
-        Vector gradk1=gradFiniteDiff(fun,xk1, g.epsilon);                //-gradFiniteDiff(fun,xk)[i];
+        Vector gradk1=gradFiniteDiff(fun,xk1, g.epsilon);                
 
         //stop criterias
         Vector difference= xk1 - xk;
         residual_norm= norm(gradk1);
-        if(  norm(difference) < g.tol_x || residual_norm < g.tol_res)  {
+        if(  norm(difference) < g.tol_x || residual_norm < g.tol_res)  
              break_cicle=true;
-        } 
 
         xk=xk1;
         k++; 
         
     }
 
-    //if the maximum number of iterations is reached, there's no convergence
-    if( !break_cicle ){
+     //if the maximum number of iterations is reached, xk is still updated but the user is warned
+    if( !break_cicle )
         std::cout << "The method didn't converge in " << g.max_iter << " iterations\n";
-        return;
-    }
     
     std::cout << "\nNumber of iterations: " << k-1 << std::endl;
     std::cout << "Point of minimum: ";

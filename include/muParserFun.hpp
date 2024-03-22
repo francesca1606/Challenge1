@@ -35,9 +35,8 @@ public:
             return std::numeric_limits<double>::quiet_NaN();
         }
 
-        for (unsigned int i = 0; i < x.size(); ++i) {
+        for (unsigned int i = 0; i < x.size(); ++i) 
             m_vars[i] = x[i];
-        }
 
         return m_parser.Eval();
     }

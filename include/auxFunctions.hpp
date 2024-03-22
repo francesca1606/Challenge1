@@ -18,9 +18,8 @@ using json = nlohmann::json;
 //calculates the norm of a Vector object
 double norm (const Vector &v) {
     double res=0.;
-    for(auto &i: v ){
+    for(auto &i: v )
         res += i*i;
-    }
     return std::sqrt(res);
 };
 

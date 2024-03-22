@@ -1,9 +1,9 @@
 CXX      ?= g++
 CXXFLAGS ?= -std=c++20
-CPPFLAGS ?= -03 -Wall -I. -I./include -Wno-conversion-null -Wno-deprecated-declarations -I../pacs-examples/Examples/include -I../pacs-examples/Examples/include/muparser   
+CPPFLAGS ?= -O3 -Wall -I. -I./include -Wno-conversion-null -Wno-deprecated-declarations -I../pacs-examples/Examples/include -I../pacs-examples/Examples/include/muparser   
 
 EXEC     = main
-LDFLAGS ?= -L../pacs-examples/Examples/lib                 
+LDFLAGS ?= -L../pacs-examples/Examples/lib
 LIBS  ?= -lmuparser
 
 
