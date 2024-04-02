@@ -12,6 +12,7 @@
 
 using Vector= std::vector<double>;
 
+//@note If you define functions in a header file, you should declare them as inline!!!!
 
 //Gradient method for computing the minimum of a function using the exact gradient contained in data.json
 void gradient_method_exact(Vector & xk) {
@@ -37,7 +38,9 @@ void gradient_method_exact(Vector & xk) {
     //otherwise parser doesn't seem to read well the variables
     fun = muParserFun(g.dim,fun.getExpression());
 
-    std::vector<muParserFun> dfun;   
+    std::vector<muParserFun> dfun;
+    //@note if you know the dimension of the vector, you should reserve the space for it
+    // dfun.reserve(g.dim);
     for (int i=0; i< g.dim; ++i)
        dfun.emplace_back(g.dim,g.df_string[i] );  
     
@@ -65,6 +68,9 @@ void gradient_method_exact(Vector & xk) {
         residual_norm= norm(gradk1);
         if(  norm(difference) < g.tol_x || residual_norm < g.tol_res)  
              break_cicle=true;
+    //@note a complicated way of writing break_cicle=(norm(difference) < g.tol_x || residual_norm < g.tol_res);
+
+
 
         xk=xk1;
         k++;
@@ -72,8 +78,11 @@ void gradient_method_exact(Vector & xk) {
 
     //if the maximum number of iterations is reached, xk is still updated but the user is warned
     if( !break_cicle )
-        std::cout << "The method didn't converge in " << g.max_iter << " iterations\n";
+        std::cout << "The method didn't converge in " << g.max_iter << " iterations\n";//@note is an error message, use cerr
 
+//@note You normally do not print in the functions, but return the results and print them in the main function
+// exeptions for debugging, or you you want a verbose option, but then you should use a #ifdef DEBUG for instance to enucleate
+// the code. Remember that prointing is slow and should be avoided in low level functions.
     std::cout << "\nNumber of iterations: " << k-1 << std::endl;
     std::cout << "Point of minimum: ";
     print(xk);
@@ -85,6 +94,8 @@ void gradient_method_exact(Vector & xk) {
 
 
 //Gradient method for computing the minimum of a function using the gradient computed through centered finite differences
+//@note But you do not need to replicate all the code! you could have just wrapped the computation of the gradient in a std::function and then have the two 
+// alternnatives. You would have had the same code for the gradient iterations: simpler, less prone to error and more mainteineable.
 void gradient_method_finite(Vector &xk){
         
     //create the struct for the parameters and read them from data.json
