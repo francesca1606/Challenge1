@@ -14,6 +14,8 @@
 using Vector=std::vector<double>;
 using json = nlohmann::json;
 
+//@note If you define functions in a header file, you should declare them as inline!!!!
+// Failure to do so could lead to linking error due to the one definition rule!
 
 //calculates the norm of a Vector object
 double norm (const Vector &v) {
